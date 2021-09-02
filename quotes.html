@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        *{margin: 0;padding: 0;box-sizing: border-box;}
+
+        body{
+            width: 100%;
+            height: auto;
+        }
+
+        .container{
+            width: 50%;
+            height: 50vh;
+            text-align: center;
+            position: relative;
+            background: coral;
+            top: 200px;
+            left: 25%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box{
+            position: relative;
+            background:white;
+            width: 80%;
+            height: 40vh;
+            top: 10%;
+            left: 10%;
+        }
+        .text{
+            position: absolute;
+            width: 100%;
+            height: auto;
+            justify-content: center;
+            align-items: center;
+            top: 40%;
+            left: 20%;
+        }
+
+        .start-quote{
+            position: relative;
+            font-size: 55px;
+            color: gray;
+            opacity: 0.8;
+            right: 50%;
+            bottom: 90px;
+        }
+
+        .quotes {
+            width: 430px;
+            display: inline;
+            position: absolute;
+            top: 16px;
+            left: 30px;
+            font-size: 25px;
+            font-style: italic;
+            font-family: sans-serif;
+            font-weight: inherit;
+            line-height: 2rem;
+            letter-spacing: 1px;
+            opacity: 1.5;
+        }
+
+        .author {
+            margin-top: 65px;
+            font-size: 23px;
+            letter-spacing: 4px;
+            font-family: sans-serif;
+        }
+
+        .number {
+            width: initial;
+            height: 6vh;
+            position: absolute;
+            right: 0px;
+            
+        }
+
+
+         img {
+            width: 25%;
+            border-radius: 20%;
+            position:relative;
+            margin-left: 70%;
+            cursor: pointer;
+            
+
+        }
+
+        .button{
+            text-align: center;
+            position: absolute;
+            width: auto;
+            background: khaki;
+            bottom: 50px;
+            left: 30%;
+            padding: 10px;
+            font-size: 25px;
+            border-radius: 20px;
+            cursor:pointer;
+        }
+
+        #newquotes{
+            width: auto;
+        }
+
+        
+
+
+
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <p class="number">
+                <img src="./img2.png" alt="tweet" title="TweetMe" id= "instapost">
+            </p>
+        </div>
+
+        <div class="text">
+            <i class="start-quote fas fa-quote-left"></i>
+            <p id="quotes" class="quotes"></p>
+            <p class="author" id="author"></p>
+        </div>
+        <label class="button">
+            <p id="newquotes">New Quotes</p>
+        </label>
+    </div>
+
+    <script>
+        const Quotes=document.getElementById("quotes");
+        const author =document.getElementById("author");
+        const newQuot =document.getElementById("newquotes");
+        const insta= document.getElementById("instapost");
+
+        let realdata="";
+        let quotesData="";
+
+        const tweetMe=()=>{
+            let tweetpost =`https://twitter.com/intent/tweet?text= ${quotesData.text}`;
+            window.open(tweetpost);
+
+        }
+
+        const getNewQuotes =()=>{
+            let rnum=Math.floor(Math.random()*100);
+            quotesData=realdata[rnum];
+            Quotes.innerText=`${quotesData.text}`;
+            quotesData.author== null ?
+            (author.innerText="unknown"):(author.innerText=`${quotesData.author}`);
+        }
+
+        const getQuotes=async()=>{
+            const api= "https://type.fit/api/quotes";
+            try{
+                let data =await fetch(api);
+                realdata= await data.json();
+                getNewQuotes();
+            }
+            catch(error){
+
+            }
+        }
+       newQuot.addEventListener("click",getNewQuotes);
+       insta.addEventListener("click",tweetMe);
+       getQuotes(); 
+    </script>
+</body>
+</html>
